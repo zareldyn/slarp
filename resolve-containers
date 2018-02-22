@@ -1,0 +1,51 @@
+#!/bin/bash
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+APP_NAME=$(basename "$SELF_DIR")
+cd "$SELF_DIR"vhosts
+
+vhostsSection="#APACHE VHOSTS"
+
+for vhostfile in $(ls); do
+	rcCommand=$(grep ':resolve-container' $vhostfile)
+
+	for command in $rcCommand; do
+		name=${command:20}
+		ip=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $name 2>/dev/null)
+		if [ $? -eq 1 ]; then
+			echo -e "\e[91m$name not found\e[0m"
+		else
+			echo "Found $name at $ip"
+			vhostsSection="$vhostsSection
+$ip	$name"
+		fi
+	done
+done
+
+vhostsSection="$vhostsSection
+#/APACHE VHOSTS"
+
+newHostsFileContent=""
+copyLine=true
+
+while IFS='' read -r line || [[ -n "$line" ]]; do
+	if [ "$line" == "#APACHE VHOSTS" ]; then
+		copyLine=false
+	fi
+	if [ "$line" == "#/APACHE VHOSTS" ]; then
+		copyLine=true
+		continue
+	fi
+	if [ $copyLine == true ]; then
+		if [ "$newHostsFileContent" == "" ]; then
+			newHostsFileContent="$line"
+		else
+			newHostsFileContent="$newHostsFileContent
+$line"
+		fi
+	fi
+done < <(docker exec $APP_NAME cat /etc/hosts)
+
+newHostsFileContent="$newHostsFileContent
+$vhostsSection"
+docker exec $APP_NAME bash -c "echo \"$newHostsFileContent\" > /etc/hosts"
+echo "Updated reverse proxy's hosts file."

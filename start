@@ -1,0 +1,17 @@
+#!/bin/bash
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+APP_NAME=$(basename "$SELF_DIR")
+
+docker run -d --restart on-failure\
+           --name $APP_NAME\
+           -e CONTAINER_NAME=$APP_NAME\
+           -v "$SELF_DIR"le-certs/:/etc/letsencrypt/\
+           -v "$SELF_DIR"vhosts/:/etc/apache2/sites-enabled/\
+           -v "$SELF_DIR"apache-logs/:/var/log/apache2/\
+           -v "$SELF_DIR"le-logs/:/var/log/letsencrypt/\
+           -p 80:80 -p 443:443\
+           $APP_NAME:latest bash -c\
+              "cron &&
+               apache2ctl -DFOREGROUND"
+
+. "$SELF_DIR"resolve-containers
