@@ -22,20 +22,37 @@ All operations must be run as *root*. The reasons are:
 * Server administration tasks usually need the highest privileges.
 * Thus, files of this project are intended to belong to root.
 
-### 1- Get the minimal Docker image on which the SLARP image will be based (built at step 3)
+### 1- Get the minimal Docker image on which the SLARP image will be based
 
 SLARP needs some things that are provided by my project [debian9-workbase](https://gitlab.zareldyn.net/zareldyn/debian9-workbase#debian9-workbase).  
 Basically, all you have to do is  
-`docker build --no-cache -t my-debian9 --build-arg SYSTEM_TIMEZONE=$(cat /etc/timezone) --build-arg PARENT_HOSTNAME=$(hostname) https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git`  
+```
+# docker build --no-cache -t my-debian9 \
+         --build-arg SYSTEM_TIMEZONE=$(cat /etc/timezone) \
+         --build-arg PARENT_HOSTNAME=$(hostname) \
+         https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
+ ```
 This will build a Docker image with tag "my-debian9". You can choose another name if you want.  
 This will also pull the official debian 9.0 image (since my-debian9 is based on it), if you have not pulled it already.
 
 ### 2- Clone this project
 
 Note that the working copy is the location where some data (certificates, logs…) will persist - you may have noticed the empty directories in the project's tree.  
-`git clone https://gitlab.zareldyn.net/zareldyn/slarp.git`
+```
+# git clone https://gitlab.zareldyn.net/zareldyn/slarp.git
+```
 
 After this, it's time to decide whether the name "slarp" is convenient or not for the way you manage your Docker images and containers, because the image you'll build at the next step and the resulting container will both be named after the directory containing this project's tree.  
 For example, if you prefer "slarp-reverse-proxy", do this:  
-`mv slarp slarp-reverse-proxy`  
+```
+# mv slarp slarp-reverse-proxy
+```
 so the final image will be tagged "slarp-reverse-proxy" and the container will have the same name.
+
+### 3- Build the SLARP image
+
+With the previous examples, it would be:  
+```
+# cd slarp-reverse-proxy
+# ./build -f my-debian9
+```
