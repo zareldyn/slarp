@@ -28,9 +28,8 @@ SLARP needs some things that are provided by my project [debian9-workbase](https
 Basically, all you have to do is  
 ```
 # docker build --no-cache -t my-debian9 \
-         --build-arg SYSTEM_TIMEZONE=$(cat /etc/timezone) \
-         --build-arg PARENT_HOSTNAME=$(hostname) \
-         https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
+               --build-arg SYSTEM_TIMEZONE=$(cat /etc/timezone) \
+               https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
  ```
 This will build a Docker image with tag "my-debian9". You can choose another name if you want.  
 This will also pull the official debian 9.0 image (since my-debian9 is based on it), if you have not pulled it already.
