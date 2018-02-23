@@ -39,10 +39,10 @@ This will also pull the official debian 9.0 image (since my-debian9 is based on 
 
 Note that the working copy is the location where some data (certificates, logs…) will persist - you may have noticed the empty directories in the project's tree.  
 ```
-# git clone https://gitlab.zareldyn.net/zareldyn/slarp.git
+# git clone https://gitlab.zareldyn.net/zareldyn/slarp.git && ./slarp/fix-permissions
 ```
 
-After this, it's time to decide whether the name "slarp" is convenient or not for the way you manage your Docker images and containers, because the image you'll build at the next step and the resulting container will both be named after the directory containing this project's tree.  
+After this, it's time to decide whether the name "slarp" is adequate or not for the way you manage your Docker images and containers, because the image you'll build at the next step and the resulting container will both be named after the directory containing this project's tree.  
 For example, if you prefer "slarp-reverse-proxy", do this:  
 ```
 # mv slarp slarp-reverse-proxy
@@ -56,3 +56,5 @@ With the previous examples, it would be:
 # cd slarp-reverse-proxy
 # ./build -f my-debian9
 ```
+
+### 4- To be continued…
