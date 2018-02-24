@@ -55,5 +55,6 @@ With the previous examples, it would be:
 # cd slarp-reverse-proxy
 # ./build -f my-debian9
 ```
+This builds the "slarp-reverse-proxy" image from the "my-debian9" image.
 
 ### 4- To be continued…
