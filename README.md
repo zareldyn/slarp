@@ -55,4 +55,11 @@ With the previous examples, it would be:
 ```
 This builds the "slarp-reverse-proxy" image from the "my-debian9" image.
 
-### 4- To be continued…
+### 4- Launch SLARP
+
+Be sure you have no other program listening to the ports 80 and 443. Then, just run
+```
+# ./start
+```
+
+### 5- To be continued…
