@@ -3,9 +3,9 @@ SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
 
 function show_usage {
-	echo "Options:"
+	echo "Parameters and options:"
 	echo "    -f base-image-name"
-	echo "        Builds the reverse proxy from 'base-image-name'."
+	echo "        Mandatory. Builds the reverse proxy from 'base-image-name'."
 	echo "    -h"
 	echo "        Displays help and exits."
 }
