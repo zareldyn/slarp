@@ -25,7 +25,7 @@ All operations must be run as *root*. The reasons are:
 ### 1- Get the minimal Docker image on which the SLARP image will be based
 
 SLARP needs some things that are provided by my project [debian9-workbase](https://gitlab.zareldyn.net/zareldyn/debian9-workbase#debian9-workbase).  
-Basically, all you have to do is  
+Basically, all you have to do is (but you may want to check that project deeper to know what it is intended for):
 ```
 # docker build --no-cache -t my-debian9 https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
  ```
