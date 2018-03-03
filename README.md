@@ -10,7 +10,7 @@ There's almost no configuration to be done for this project itself. Your main wo
 It is not especially designed for high scalability, though Apache (here used with its default configuration) can handle a decent number of simultaneous connections.
 
 The typical situation is when:
-* You have several containers on your machine that act as web servers, so you need a single entrypoint that listens to the ports 80/443 of the host.
+* You have several containers on your machine that act as backend web servers, so you need a single entrypoint that listens to the ports 80/443 of the host.
 * It's better if this entrypoint runs isolated in its container.
 * Some of the backends must be originally accessed via HTTPS.
 
@@ -62,4 +62,14 @@ Be sure you have no other program listening to the ports 80 and 443. Then, just 
 # ./start
 ```
 
-### 5- To be continued…
+### 5- Define your needs
+
+Let's say your machine must handle requests like *https://www.my-great-website.org/a-page*. The domain *www.my-great-website.org* is binded to your IP but you have no certificate for it, and you'd like to redirect traffic to a container named *my-great-website*.
+
+#### Add a vhost
+
+To write…
+
+#### Get a new Let's Encrypt SSL certificate
+
+To write…
