@@ -64,11 +64,47 @@ Be sure you have no other program listening to the ports 80 and 443. Then, just 
 
 ### 5- Define your needs
 
-Let's say your machine must handle requests like *https://www.my-great-website.org/a-page*. The domain *www.my-great-website.org* is binded to your IP but you have no certificate for it, and you'd like to redirect traffic to a container named *my-great-website*.
+Let's say your machine must handle requests like *http(s)://www.my-great-website.org/a-page*. The domain *www.my-great-website.org* is bound to your IP but you have no certificate for it, and you'd like to forward the requests to a container named *my-great-website*. Additionally, you want to redirect all HTTP requests to their HTTPS equivalent.
 
 #### Add a vhost
 
-To write…
+In the *vhosts* directory of the SLARP working copy, add a file containing:
+```apache
+#:resolve-container:my-great-website
+
+<VirtualHost *:80>
+    ServerName www.my-great-website.org
+
+    RewriteEngine on
+    RewriteRule ^(.*)$ https://www.my-great-website.org$1 [QSA,R=301,L]
+
+    ErrorLog ${APACHE_LOG_DIR}/my-great-website.error.log
+    CustomLog ${APACHE_LOG_DIR}/my-great-website.access.log combined
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName www.my-great-website.org
+
+    SSLEngine on
+    SSLCertificateKeyFile /etc/letsencrypt/live/www.my-great-website.org/privkey.pem
+    SSLCertificateFile /etc/letsencrypt/live/www.my-great-website.org/fullchain.pem
+
+    RequestHeader set X-Forwarded-Proto "https"
+    ProxyPass / http://my-great-website/
+    ProxyPassReverse / http://my-great-website/
+    ProxyPreserveHost On
+
+    ErrorLog ${APACHE_LOG_DIR}/my-great-website.error.log
+    CustomLog ${APACHE_LOG_DIR}/my-great-website.access.log combined
+</VirtualHost>
+```
+
+This is just an example of Apache virtual host configuration. Following the Apache convention, this file should be named *xxx-my-great-website.conf*.  
+Note that:
+* The first line `#:resolve-container:my-great-website` is a comment for Apache, but is a directive for SLARP. Without it, `http://my-great-website/` (port 80 of a local container) could not be reached.
+* Some backends need something like `RequestHeader set X-Forwarded-Proto "https"` so they know that the original request was a HTTPS request.
+* The internal `${APACHE_LOG_DIR}` is bound to the *apache-logs* directory of the SLARP working copy.
+* The internal `/etc/letsencrypt` is bound to the *le-certs* directory of the SLARP working copy ; always use the pattern */etc/letsencrypt/live/{domain}/{file}.pem* for `SSLCertificate*` directives.
 
 #### Get a new Let's Encrypt SSL certificate
 
