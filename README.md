@@ -12,7 +12,7 @@ It is not especially designed for high scalability, though Apache (here used wit
 The typical situation is when:
 * You have several containers on your machine that act as backend web servers, so you need a single entrypoint that listens to the ports 80/443 of the host.
 * It's better if this entrypoint runs isolated in its container.
-* Some of the backends must be originally accessed via HTTPS.
+* Some of the backends must be originally accessed via HTTPS, and certified by Let's Encrypt.
 
 
 ## How to install and use
