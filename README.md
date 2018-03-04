@@ -4,9 +4,9 @@
 
 ## Goal
 
-An environment that is ready to forward HTTP requests to backend web servers, while ensuring SSL termination for HTTPS requests.  
+SLARP is an environment that is ready to forward HTTP requests to backend web servers, while ensuring SSL termination for HTTPS requests.  
 Easily installable and sufficient in many cases.  
-There's almost no configuration to be done for this project itself. Your main work is to write **vhosts** that call your backends, and to run some short commands to request new Let's Encrypt SSL certificates (renewal is then automatic).  
+There's almost no configuration to be done for SLARP itself. Your main work is to write **vhosts** that call your backends, and to run some short commands to request new Let's Encrypt SSL certificates (renewal is then automatic).  
 It is not especially designed for high scalability, though Apache (here used with its default configuration) can handle a decent number of simultaneous connections.
 
 The typical situation is when:
@@ -29,12 +29,11 @@ Basically, all you have to do is (but you may want to check that project deeper 
 ```
 # docker build --no-cache -t my-debian9 https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
  ```
-This will build a Docker image with tag "my-debian9". You can choose another name if you want.  
-This will also pull the official debian 9.0 image (since my-debian9 is based on it), if you have not pulled it already.
+This will build a Docker image with tag "my-debian9". You can choose another name if you want.
 
 ### 2- Clone this project
 
-Note that the working copy is the location where some data (certificates, logs…) will persist - you may have noticed the empty directories in the project's tree.  
+Note that the working copy is the location where some data (certificates, logs…) will persist; you may have noticed the empty directories in the project's tree.  
 ```
 # git clone https://gitlab.zareldyn.net/zareldyn/slarp.git && ./slarp/fix-permissions
 ```
@@ -107,7 +106,7 @@ In the *vhosts* directory of the SLARP working copy, add a file containing:
 ```
 Notes:
 * The internal `${APACHE_LOG_DIR}` directory is bound to the *apache-logs* directory of the SLARP working copy.
-* The internal `/etc/letsencrypt` directory is bound to the *le-certs* directory of the SLARP working copy ; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*` directives.
+* The internal `/etc/letsencrypt` directory is bound to the *le-certs* directory of the SLARP working copy; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*` directives.
 
 #### Get a new Let's Encrypt SSL certificate
 
@@ -120,7 +119,7 @@ Then, run
 certbot certonly --apache -d www.my-great-website.org
 ```
 and follow the instructions.  
-No other command required, you can [ctrl][d] this environment.
+No other command required, you can [ctrl][d] the SLARP environment.
 
 ### 6- Apply your changes
 
@@ -128,9 +127,9 @@ Once you have made changes in the *vhosts* directory, run
 ```
 # ./reload
 ```
-It resolves the needed backend containers to IPs (the directives for SLARP in the vhost files) and reloads the Apache service.
+This command resolves the needed backend containers to IPs (it follows the directives for SLARP in the vhost files) and reloads the Apache service.
 
-It's time to verify if everything is OK with `https://www.my-great-website.org` ;-)
+Now it's time to verify if everything is OK with `https://www.my-great-website.org` ;-)
 
 ### 7- And after
 
