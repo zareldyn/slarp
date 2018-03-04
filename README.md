@@ -130,6 +130,8 @@ Once you have made changes in the *vhosts* directory, run
 ```
 It resolves the needed backend containers to IPs (the directives for SLARP in the vhost files) and reloads the Apache service.
 
+It's time to verify if everything is OK with `https://www.my-great-website.org` ;-)
+
 ### 7- And after
 
 To be continued…
