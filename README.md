@@ -4,8 +4,8 @@
 
 ## Goal
 
-An easy way to forward HTTP requests to backend web servers, while ensuring SSL termination for HTTPS requests.  
-Quickly installable and sufficient in many cases.  
+An environment that is ready to forward HTTP requests to backend web servers, while ensuring SSL termination for HTTPS requests.  
+Easily installable and sufficient in many cases.  
 There's almost no configuration to be done for this project itself. Your main work is to write **vhosts** that call your backends, and to run some short commands to request new Let's Encrypt SSL certificates (renewal is then automatic).  
 It is not especially designed for high scalability, though Apache (here used with its default configuration) can handle a decent number of simultaneous connections.
 
@@ -61,6 +61,7 @@ Be sure you have no other program listening to the ports 80 and 443. Then, just 
 ```
 # ./start
 ```
+Now a container named "slarp-reverse-proxy" is running, but for now it has nothing to forward.
 
 ### 5- Define your needs
 
