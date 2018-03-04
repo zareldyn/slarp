@@ -4,7 +4,7 @@
 
 ## Goal
 
-SLARP is an environment that is ready to forward HTTP requests to backend web servers, while ensuring SSL termination for HTTPS requests.  
+SLARP is an environment that is ready to forward HTTP requests to backend web servers (so it acts as a reverse proxy), while ensuring SSL termination for HTTPS requests.  
 Easily installable and sufficient in many cases.  
 There's almost no configuration to be done for SLARP itself. Your main work is to write **vhosts** that call your backends, and to run some short commands to request new Let's Encrypt SSL certificates (renewal is then automatic).  
 It is not especially designed for high scalability, though Apache (here used with its default configuration) can handle a decent number of simultaneous connections.
@@ -17,7 +17,7 @@ The typical situation is when:
 
 ## How to install and use
 
-Here I describe commands that work on a classic debian-based Linux distribution.  
+Here I describe commands that work on a classic debian-based Linux distribution, with a recent version of Bash.  
 All operations must be run as **root**. The reasons are:
 * Server administration tasks usually need the highest privileges.
 * Thus, files of this project are intended to belong to root.
@@ -38,7 +38,7 @@ Note that the working copy is the location where some data (certificates, logs�
 # git clone https://gitlab.zareldyn.net/zareldyn/slarp.git && ./slarp/fix-permissions
 ```
 
-After this, it's time to decide whether the name "slarp" is adequate or not for the way you manage your Docker images and containers, because the image you'll build at the next step and the resulting container will both be named after the directory containing this project's tree.  
+After this, it's time to decide whether the name "slarp" is meaningful or not for you, because the image you'll build at the next step and the resulting container will both be named after the directory containing this project's tree.  
 For example, if you prefer "slarp-reverse-proxy", do this:  
 ```
 # mv slarp slarp-reverse-proxy
@@ -133,4 +133,24 @@ Now it's time to verify if everything is OK with `https://www.my-great-website.o
 
 ### 7- And after
 
-To be continued…
+#### Reload / Restart
+
+If a backend web server is restarted, perhaps its IP has changed. In this case, run
+```
+# ./reload
+```
+or
+```
+# ./resolve-containers
+```
+The *resolve-containers* command do only containers resolving to IPs, without reloading the Apache service.  
+The *reload* command must be run when you change something in your vhosts.  
+A full restart is done with:
+```
+# ./stop && ./start
+```
+The *stop* command removes the SLARP container.
+
+#### Backup
+
+To write…
