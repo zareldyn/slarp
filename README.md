@@ -106,7 +106,7 @@ In the *vhosts* directory of the SLARP working copy, add a file containing:
 ```
 Notes:
 * The internal `${APACHE_LOG_DIR}` directory is bound to the *apache-logs* directory of the SLARP working copy.
-* The internal `/etc/letsencrypt` directory is bound to the *le-certs* directory of the SLARP working copy; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*` directives.
+* The internal `/etc/letsencrypt` directory is bound to the *certs* directory of the SLARP working copy; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*` directives.
 
 #### Get a new Let's Encrypt SSL certificate
 
