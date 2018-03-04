@@ -120,7 +120,7 @@ Then, run
 certbot certonly --apache -d www.my-great-website.org
 ```
 and follow the instructions.  
-No other command required, you can [ctrl][d] your container.
+No other command required, you can [ctrl][d] this environment.
 
 ### 6- Apply your changes
 
@@ -128,7 +128,7 @@ Once you have made changes in the *vhosts* directory, run
 ```
 # ./reload
 ```
-It resolves the needed backend containers to IPs (the SLARP directives in the vhost files) and reloads the Apache service.
+It resolves the needed backend containers to IPs (the directives for SLARP in the vhost files) and reloads the Apache service.
 
 ### 7- And after
 
