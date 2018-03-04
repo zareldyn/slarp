@@ -24,7 +24,7 @@ All operations must be run as **root**. The reasons are:
 
 ### 1- Get the minimal Docker image on which the SLARP image will be based
 
-SLARP needs some things that are provided by my project [debian9-workbase](https://gitlab.zareldyn.net/zareldyn/debian9-workbase#debian9-workbase).  
+SLARP needs some things that are provided by the project [debian9-workbase](https://gitlab.zareldyn.net/zareldyn/debian9-workbase#debian9-workbase).  
 Basically, all you have to do is (but you may want to check that project deeper to know what it is intended for):
 ```
 # docker build --no-cache -t my-debian9 https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
@@ -105,8 +105,8 @@ In the *vhosts* directory of the SLARP working copy, add a file containing:
 </VirtualHost>
 ```
 Notes:
-* The internal `${APACHE_LOG_DIR}` directory is bound to the *apache-logs* directory of the SLARP working copy.
-* The internal `/etc/letsencrypt` directory is bound to the *certs* directory of the SLARP working copy; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*` directives.
+* The internal `${APACHE_LOG_DIR}` directory is bound to the *apache-logs* directory of the SLARP working copy; I recommend to use it.
+* The internal `/etc/letsencrypt` directory is bound to the *certs* directory of the SLARP working copy; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*File` directives.
 
 #### Get a new Let's Encrypt SSL certificate
 
@@ -119,6 +119,7 @@ Then, run
 certbot certonly --apache -d www.my-great-website.org
 ```
 and follow the instructions.  
+The certificate will be saved in the *certs* directory of the SLARP working copy, and the renewal is already scheduled.  
 No other command required, you can [ctrl][d] the SLARP environment.
 
 ### 6- Apply your changes
@@ -151,6 +152,10 @@ A full restart is done with:
 ```
 The *stop* command removes the SLARP container.
 
-#### Backup
+#### Persistent data
 
-To write…
+The *certs* directory contains the LE certificates Certbot has requested for you, and regularly you may want to make a copy of it, even if it is persisted when you *stop* SLARP.
+
+The same applies to the *vhosts* you create.
+
+Finally, the purpose of *apache-logs* and *certbot-logs* is to avoid logs to grow inside the container. Moreover, it is usually useful to keep them.
