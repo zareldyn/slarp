@@ -158,4 +158,14 @@ The *certs* directory contains the LE certificates Certbot has requested for you
 
 The same applies to the *vhosts* you create.
 
-Finally, the purpose of *apache-logs* and *certbot-logs* is to avoid logs to grow inside the container. Moreover, it is usually useful to keep them.
+Finally, the purpose of *apache-logs* and *certbot-logs* is to avoid having logs growing inside the container. Moreover, it is usually useful to keep them.
+
+#### Updating SLARP
+
+Optionnaly, consider running again the step 1.  
+Then, the SLARP update is done by getting the repository changes, re-executing the step 3 and restart the service:
+```
+# git pull
+# ./build -f my-debian9
+# ./stop && ./start
+```
