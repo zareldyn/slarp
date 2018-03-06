@@ -29,7 +29,7 @@ Basically, all you have to do is (but you may want to check that project deeper 
 ```
 # docker build --no-cache -t my-debian9 https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
  ```
-This will build a Docker image with tag "my-debian9". You can choose another name if you want.
+This will build a Docker image named "my-debian9". You can choose another name if you want.
 
 ### 2- Clone this project
 
@@ -43,7 +43,7 @@ For example, if you prefer "slarp-reverse-proxy", do this:
 ```
 # mv slarp slarp-reverse-proxy
 ```
-so the final image will be tagged "slarp-reverse-proxy" and the container will have the same name.
+so the final image will be named "slarp-reverse-proxy" and the container will have the same name.
 
 ### 3- Build the SLARP image
 
