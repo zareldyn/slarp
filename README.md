@@ -71,6 +71,7 @@ Let's say your machine must handle requests like `http(s)://www.my-great-website
 In the *vhosts* directory of the SLARP working copy, add a file containing:
 ```apache
 # This is just an example of Apache virtual host configuration.
+# In build-context/Dockerfile you can see the Apache mods that are enabled.
 # Following the Apache convention, this file should be named xxx-my-great-website.conf.
 
 <VirtualHost *:80>
