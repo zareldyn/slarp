@@ -29,7 +29,7 @@ Basically, all you have to do is (but you may want to check that project deeper 
 ```
 # docker build --no-cache -t my-debian9 https://gitlab.zareldyn.net/zareldyn/debian9-workbase.git
  ```
-This will build a Docker image with tag "my-debian9". You can choose another name if you want.
+This will build a Docker image named "my-debian9". You can choose another name if you want.
 
 ### 2- Clone this project
 
@@ -43,7 +43,7 @@ For example, if you prefer "slarp-reverse-proxy", do this:
 ```
 # mv slarp slarp-reverse-proxy
 ```
-so the final image will be tagged "slarp-reverse-proxy" and the container will have the same name.
+so the final image will be named "slarp-reverse-proxy" and the container will have the same name.
 
 ### 3- Build the SLARP image
 
@@ -71,6 +71,7 @@ Let's say your machine must handle requests like `http(s)://www.my-great-website
 In the *vhosts* directory of the SLARP working copy, add a file containing:
 ```apache
 # This is just an example of Apache virtual host configuration.
+# In build-context/Dockerfile you can see the Apache mods that are enabled.
 # Following the Apache convention, this file should be named xxx-my-great-website.conf.
 
 <VirtualHost *:80>
