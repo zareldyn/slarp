@@ -164,7 +164,7 @@ Finally, the purpose of *apache-logs* and *certbot-logs* is to avoid having logs
 #### Updating SLARP
 
 Optionnaly, consider running again the step 1.  
-Then, the SLARP update is done by getting the repository changes, re-executing the step 3 and restart the service:
+Then, the SLARP update is done by getting the repository changes, re-executing the step 3 and restarting the service:
 ```
 # git pull && ./fix-permissions
 # ./build -f my-debian9
