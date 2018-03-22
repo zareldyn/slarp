@@ -4,13 +4,10 @@ APP_NAME=$(basename "$SELF_DIR")
 
 function show_usage {
 	echo "Parameters and options:"
-	echo
 	echo "    -f base-image-name"
 	echo "        Mandatory. Builds the reverse proxy from 'base-image-name'."
-	echo
 	echo "    -h"
 	echo "        Displays this help and exits."
-	echo
 }
 
 BASE_IMAGE=""
