@@ -1,0 +1,10 @@
+#!/bin/bash
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+APP_NAME=$(basename "$SELF_DIR")
+
+service docker status &>/dev/null || {
+	echo "no"
+	exit
+}
+
+echo "yes"
