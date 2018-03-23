@@ -2,9 +2,14 @@
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
 
-service docker status &>/dev/null || {
+function say_no {
 	echo "no"
 	exit
 }
+
+service docker status &>/dev/null || say_no
+
+docker ps | grep -q " $APP_NAME:"
+[ $? -eq 0 ] || say_no
 
 echo "yes"
