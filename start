@@ -20,3 +20,4 @@ docker run -d --restart on-failure\
                apache2ctl -DFOREGROUND"
 
 . "$SELF_DIR"resolve-containers
+echo "$APP_NAME started"

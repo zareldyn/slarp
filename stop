@@ -7,4 +7,6 @@ APP_NAME=$(basename "$SELF_DIR")
         exit
 }
 
-docker stop $APP_NAME && docker rm $APP_NAME
+docker stop $APP_NAME >/dev/null && \
+docker rm $APP_NAME >/dev/null && \
+echo "$APP_NAME stopped"

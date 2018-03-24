@@ -3,7 +3,7 @@ SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
 
 [ $(. "$SELF_DIR"is-running) == "yes" ] || {
-	echo "Error: $APP_NAME is not running." >&2
+	echo "Error: $APP_NAME is not running" >&2
 	exit 1
 }
 
@@ -18,7 +18,7 @@ for vhostfile in $(ls); do
 		name=${command:20}
 		ip=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $name 2>/dev/null)
 		if [ $? -eq 1 ]; then
-			echo -e "\e[91m$name not found\e[0m"
+			echo "Warning: $name not found" >&2
 		else
 			echo "Found $name at $ip"
 			vhostsSection="$vhostsSection
@@ -54,4 +54,4 @@ done < <(docker exec $APP_NAME cat /etc/hosts)
 newHostsFileContent="$newHostsFileContent
 $vhostsSection"
 docker exec $APP_NAME bash -c "echo \"$newHostsFileContent\" > /etc/hosts"
-echo "Updated reverse proxy's hosts file."
+echo "Updated hosts file"
