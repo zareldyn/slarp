@@ -2,6 +2,11 @@
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
 
+[ $(. "$SELF_DIR"is-running) == "no" ] || {
+	echo "$APP_NAME is already running!"
+	exit
+}
+
 docker run -d --restart on-failure\
            --name $APP_NAME\
            -e CONTAINER_NAME=$APP_NAME\
@@ -15,3 +20,4 @@ docker run -d --restart on-failure\
                apache2ctl -DFOREGROUND"
 
 . "$SELF_DIR"resolve-containers
+echo "$APP_NAME started"
