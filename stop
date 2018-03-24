@@ -2,4 +2,9 @@
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
 
+[ $(. "$SELF_DIR"is-running) == "yes" ] || {
+        echo "$APP_NAME is already stopped!"
+        exit
+}
+
 docker stop $APP_NAME && docker rm $APP_NAME
