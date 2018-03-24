@@ -2,3 +2,4 @@
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 
 chmod 744 "$SELF_DIR"{build,reload,resolve-containers,start,stop,fix-permissions}
+chmod 755 "$SELF_DIR"is-running

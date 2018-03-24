@@ -1,6 +1,12 @@
 #!/bin/bash
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
+
+[ $(. "$SELF_DIR"is-running) == "yes" ] || {
+	echo "Error: $APP_NAME is not running." >&2
+	exit 1
+}
+
 cd "$SELF_DIR"vhosts
 
 vhostsSection="#APACHE VHOSTS"
