@@ -9,7 +9,7 @@ function say_no {
 
 service docker status &>/dev/null || say_no
 
-docker ps | grep -q " $APP_NAME:"
+docker ps | grep -q " $APP_NAME$"
 [ $? -eq 0 ] || say_no
 
 echo "yes"
