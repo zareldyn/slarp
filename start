@@ -7,13 +7,23 @@ APP_NAME=$(basename "$SELF_DIR")
 	exit
 }
 
+DEFAULT_CERTS_DIR="$SELF_DIR"certs/
+DEFAULT_VHOSTS_DIR="$SELF_DIR"vhosts/
+DEFAULT_APACHE_LOGS_DIR="$SELF_DIR"apache-logs/
+DEFAULT_CERTBOT_LOGS_DIR="$SELF_DIR"certbot-logs/
+
+CERTS_DIR=DEFAULT_CERTS_DIR
+VHOSTS_DIR=DEFAULT_VHOSTS_DIR
+APACHE_LOGS_DIR=DEFAULT_APACHE_LOGS_DIR
+CERTBOT_LOGS_DIR=DEFAULT_CERTBOT_LOGS_DIR
+
 docker run -d --restart on-failure\
            --name $APP_NAME\
            -e CONTAINER_NAME=$APP_NAME\
-           -v "$SELF_DIR"certs/:/etc/letsencrypt/\
-           -v "$SELF_DIR"vhosts/:/etc/apache2/sites-enabled/\
-           -v "$SELF_DIR"apache-logs/:/var/log/apache2/\
-           -v "$SELF_DIR"certbot-logs/:/var/log/letsencrypt/\
+           -v "$CERTS_DIR":/etc/letsencrypt/\
+           -v "$VHOSTS_DIR":/etc/apache2/sites-enabled/\
+           -v "$APACHE_LOGS_DIR":/var/log/apache2/\
+           -v "$CERTBOT_LOGS_DIR":/var/log/letsencrypt/\
            -p 80:80 -p 443:443\
            $APP_NAME:latest bash -c\
               "cron &&
