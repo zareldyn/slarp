@@ -1,16 +1,17 @@
 #!/bin/bash
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 APP_NAME=$(basename "$SELF_DIR")
+APP_TMPFILE="/var/tmp/slarp"
 
 [ $(. "$SELF_DIR"is-running) == "no" ] || {
 	echo "$APP_NAME is already running!"
 	exit
 }
 
-DEFAULT_CERTS_DIR="$SELF_DIR"certs/
-DEFAULT_VHOSTS_DIR="$SELF_DIR"vhosts/
-DEFAULT_APACHE_LOGS_DIR="$SELF_DIR"apache-logs/
-DEFAULT_CERTBOT_LOGS_DIR="$SELF_DIR"certbot-logs/
+DEFAULT_CERTS_DIR="$SELF_DIR"certs
+DEFAULT_VHOSTS_DIR="$SELF_DIR"vhosts
+DEFAULT_APACHE_LOGS_DIR="$SELF_DIR"apache-logs
+DEFAULT_CERTBOT_LOGS_DIR="$SELF_DIR"certbot-logs
 
 [ -z "$CERTS_DIR" ] && CERTS_DIR="$DEFAULT_CERTS_DIR"
 [ -z "$VHOSTS_DIR" ] && VHOSTS_DIR="$DEFAULT_VHOSTS_DIR"
@@ -23,6 +24,14 @@ for dir in "$CERTS_DIR" "$VHOSTS_DIR" "$APACHE_LOGS_DIR" "$CERTBOT_LOGS_DIR"; do
 		exit 74
 	}
 done
+
+echo CERTS_DIR="$CERTS_DIR"               >  "$APP_TMPFILE" || {
+	echo "Could not write $APP_TMPFILE. Aborting." >&2
+	exit 74
+}
+echo VHOSTS_DIR="$VHOSTS_DIR"             >> "$APP_TMPFILE"
+echo APACHE_LOGS_DIR="$APACHE_LOGS_DIR"   >> "$APP_TMPFILE"
+echo CERTBOT_LOGS_DIR="$CERTBOT_LOGS_DIR" >> "$APP_TMPFILE"
 
 docker run -d --restart on-failure\
            --name $APP_NAME\
