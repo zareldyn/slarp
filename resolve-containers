@@ -8,7 +8,8 @@ APP_TMPFILE="/var/tmp/slarp"
 	exit 1
 }
 
-cd "$SELF_DIR"/vhosts
+source "$APP_TMPFILE"
+cd "$VHOSTS_DIR"
 
 vhostsSection="#APACHE VHOSTS"
 
