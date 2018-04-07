@@ -1,5 +1,5 @@
 #!/bin/bash
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
 
 function say_no {

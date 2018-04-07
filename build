@@ -1,5 +1,5 @@
 #!/bin/bash
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
 
 function show_usage {
@@ -39,4 +39,4 @@ if [ -z $BASE_IMAGE ]; then
 	exit 64
 fi
 
-docker build --no-cache -t $APP_NAME --build-arg BASE_IMAGE=$BASE_IMAGE "$SELF_DIR"build-context
+docker build --no-cache -t $APP_NAME --build-arg BASE_IMAGE=$BASE_IMAGE "$SELF_DIR"/build-context

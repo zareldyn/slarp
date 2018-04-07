@@ -1,17 +1,17 @@
 #!/bin/bash
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
 APP_TMPFILE="/var/tmp/slarp"
 
-[ $(. "$SELF_DIR"is-running) == "no" ] || {
+[ $(. "$SELF_DIR"/is-running) == "no" ] || {
 	echo "$APP_NAME is already running!"
 	exit
 }
 
-DEFAULT_CERTS_DIR="$SELF_DIR"certs
-DEFAULT_VHOSTS_DIR="$SELF_DIR"vhosts
-DEFAULT_APACHE_LOGS_DIR="$SELF_DIR"apache-logs
-DEFAULT_CERTBOT_LOGS_DIR="$SELF_DIR"certbot-logs
+DEFAULT_CERTS_DIR="$SELF_DIR"/certs
+DEFAULT_VHOSTS_DIR="$SELF_DIR"/vhosts
+DEFAULT_APACHE_LOGS_DIR="$SELF_DIR"/apache-logs
+DEFAULT_CERTBOT_LOGS_DIR="$SELF_DIR"/certbot-logs
 
 [ -z "$CERTS_DIR" ] && CERTS_DIR="$DEFAULT_CERTS_DIR"
 [ -z "$VHOSTS_DIR" ] && VHOSTS_DIR="$DEFAULT_VHOSTS_DIR"
@@ -36,14 +36,14 @@ echo CERTBOT_LOGS_DIR="$CERTBOT_LOGS_DIR" >> "$APP_TMPFILE"
 docker run -d --restart on-failure\
            --name $APP_NAME\
            -e CONTAINER_NAME=$APP_NAME\
-           -v "$CERTS_DIR":/etc/letsencrypt/\
-           -v "$VHOSTS_DIR":/etc/apache2/sites-enabled/\
-           -v "$APACHE_LOGS_DIR":/var/log/apache2/\
-           -v "$CERTBOT_LOGS_DIR":/var/log/letsencrypt/\
+           -v "$CERTS_DIR":/etc/letsencrypt\
+           -v "$VHOSTS_DIR":/etc/apache2/sites-enabled\
+           -v "$APACHE_LOGS_DIR":/var/log/apache2\
+           -v "$CERTBOT_LOGS_DIR":/var/log/letsencrypt\
            -p 80:80 -p 443:443\
            $APP_NAME:latest bash -c\
               "cron &&
                apache2ctl -DFOREGROUND"
 
-. "$SELF_DIR"resolve-containers
+. "$SELF_DIR"/resolve-containers
 echo "$APP_NAME started"
