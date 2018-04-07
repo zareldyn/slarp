@@ -28,15 +28,15 @@ echo VHOSTS_DIR="$VHOSTS_DIR"             >> "$APP_TMPFILE"
 echo APACHE_LOGS_DIR="$APACHE_LOGS_DIR"   >> "$APP_TMPFILE"
 echo CERTBOT_LOGS_DIR="$CERTBOT_LOGS_DIR" >> "$APP_TMPFILE"
 
-docker run -d --restart on-failure\
-           --name $APP_NAME\
-           -e CONTAINER_NAME=$APP_NAME\
-           -v "$CERTS_DIR":/etc/letsencrypt\
-           -v "$VHOSTS_DIR":/etc/apache2/sites-enabled\
-           -v "$APACHE_LOGS_DIR":/var/log/apache2\
-           -v "$CERTBOT_LOGS_DIR":/var/log/letsencrypt\
-           -p 80:80 -p 443:443\
-           $APP_NAME:latest bash -c\
+docker run -d --restart on-failure \
+           --name $APP_NAME \
+           -e CONTAINER_NAME=$APP_NAME \
+           -v "$CERTS_DIR":/etc/letsencrypt \
+           -v "$VHOSTS_DIR":/etc/apache2/sites-enabled \
+           -v "$APACHE_LOGS_DIR":/var/log/apache2 \
+           -v "$CERTBOT_LOGS_DIR":/var/log/letsencrypt \
+           -p 80:80 -p 443:443 \
+           $APP_NAME:latest bash -c \
               "cron &&
                apache2ctl -DFOREGROUND"
 
