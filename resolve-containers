@@ -1,13 +1,15 @@
 #!/bin/bash
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
+APP_TMPFILE="/var/tmp/slarp"
 
-[ $(. "$SELF_DIR"is-running) == "yes" ] || {
+[ $(. "$SELF_DIR"/is-running) == "yes" ] || {
 	echo "Error: $APP_NAME is not running" >&2
 	exit 1
 }
 
-cd "$SELF_DIR"vhosts
+source "$APP_TMPFILE"
+cd "$VHOSTS_DIR"
 
 vhostsSection="#APACHE VHOSTS"
 
