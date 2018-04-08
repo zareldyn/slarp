@@ -1,7 +1,7 @@
 #!/bin/bash
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
-APP_VARFILE="/var/slarp"
+APP_VARFILE="$SELF_DIR/laststart.var"
 
 [ $(. "$SELF_DIR"/is-running) == "no" ] || {
 	echo "$APP_NAME is already running"
