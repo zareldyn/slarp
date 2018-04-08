@@ -1,13 +1,21 @@
 #!/bin/bash
-SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
+SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
+APP_VARFILE="$SELF_DIR/laststart.var"
 
-[ $(. "$SELF_DIR"is-running) == "yes" ] || {
+function abort_varfile {
+	echo "Error: $APP_VARFILE absent or corrupted - please restart $APP_NAME" >&2
+	exit 1
+}
+
+[ $(. "$SELF_DIR"/is-running) == "yes" ] || {
 	echo "Error: $APP_NAME is not running" >&2
 	exit 1
 }
 
-cd "$SELF_DIR"vhosts
+source "$APP_VARFILE" || abort_varfile
+[ -z "$VHOSTS_DIR" ] && abort_varfile
+cd "$VHOSTS_DIR"
 
 vhostsSection="#APACHE VHOSTS"
 
@@ -54,4 +62,4 @@ done < <(docker exec $APP_NAME cat /etc/hosts)
 newHostsFileContent="$newHostsFileContent
 $vhostsSection"
 docker exec $APP_NAME bash -c "echo \"$newHostsFileContent\" > /etc/hosts"
-echo "Updated hosts file"
+echo "Updated container's hosts file"

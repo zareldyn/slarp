@@ -1,0 +1,5 @@
+apache-logs/
+certbot-logs/
+vhosts/
+certs/
+laststart.var
