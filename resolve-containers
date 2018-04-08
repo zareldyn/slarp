@@ -3,12 +3,18 @@ SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
 APP_TMPFILE="/var/tmp/slarp"
 
+function abort_tmp {
+	echo "Error: tmp file absent or corrupted. Please restart $APP_NAME." >&2
+	exit 1
+}
+
 [ $(. "$SELF_DIR"/is-running) == "yes" ] || {
 	echo "Error: $APP_NAME is not running" >&2
 	exit 1
 }
 
-source "$APP_TMPFILE"
+source "$APP_TMPFILE" || abort_tmp
+[ -z "$VHOSTS_DIR" ] && abort_tmp
 cd "$VHOSTS_DIR"
 
 vhostsSection="#APACHE VHOSTS"
