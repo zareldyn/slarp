@@ -1,10 +1,10 @@
 #!/bin/bash
 SELF_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APP_NAME=$(basename "$SELF_DIR")
-APP_TMPFILE="/var/tmp/slarp"
+APP_VARFILE="/var/slarp"
 
-function abort_tmp {
-	echo "Error: tmp file absent or corrupted. Please restart $APP_NAME." >&2
+function abort_varfile {
+	echo "Error: $APP_VARFILE absent or corrupted - please restart $APP_NAME" >&2
 	exit 1
 }
 
@@ -13,8 +13,8 @@ function abort_tmp {
 	exit 1
 }
 
-source "$APP_TMPFILE" || abort_tmp
-[ -z "$VHOSTS_DIR" ] && abort_tmp
+source "$APP_VARFILE" || abort_varfile
+[ -z "$VHOSTS_DIR" ] && abort_varfile
 cd "$VHOSTS_DIR"
 
 vhostsSection="#APACHE VHOSTS"
@@ -62,4 +62,4 @@ done < <(docker exec $APP_NAME cat /etc/hosts)
 newHostsFileContent="$newHostsFileContent
 $vhostsSection"
 docker exec $APP_NAME bash -c "echo \"$newHostsFileContent\" > /etc/hosts"
-echo "Updated hosts file"
+echo "Updated container's hosts file"
