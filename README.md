@@ -7,7 +7,7 @@
 SLARP is an environment that is ready to forward HTTP requests to backend web servers (so it acts as a reverse proxy), while ensuring SSL termination for HTTPS requests.  
 Easily installable and sufficient in many cases.  
 There's almost no configuration to be done for SLARP itself. Your main work is to write **vhosts** that call your backends, and to run some short commands to request new Let's Encrypt SSL certificates (renewal is then automatic).  
-It is not especially designed for high scalability, though Apache (here used with its default configuration) can handle a decent number of simultaneous connections.
+It is not especially designed for high performance or scalability, though Apache (here used with its default configuration) can handle a decent number of simultaneous connections.
 
 The typical situation is when:
 * You have several containers on your machine that act as backend web servers, so you need a single entrypoint that listens to the ports 80/443 of the host.
@@ -33,8 +33,9 @@ This will build a Docker image named "my-debian9". You can choose another name i
 
 ### 2- Clone this project
 
-Note that the working copy is the location where some data (certificates, logs…) will persist; you may have noticed the empty directories in the project's tree.  
+I suggest to install SLARP in `/opt`.
 ```
+# cd /opt
 # git clone https://gitlab.zareldyn.net/zareldyn/slarp.git && ./slarp/fix-permissions
 ```
 
@@ -60,6 +61,12 @@ Be sure you have no other program listening to the ports 80 and 443. Then, just 
 ```
 # ./start
 ```
+By default all important data go to the SLARP installation directory. However you can adjust the values of 4 environment variables before starting: `VHOSTS_DIR`, `CERTS_DIR`, `APACHE_LOGS_DIR` and `CERTBOT_LOGS_DIR`. For example
+```
+# VHOSTS_DIR=/path/to/your/vhosts CERTS_DIR=/path/to/your/certificates ./start
+```
+runs the service with a customized location for the *vhosts* and the *certs*, but still keeps logs where SLARP is installed.
+
 Now a container named "slarp-reverse-proxy" is running, but for now it has nothing to forward.
 
 ### 5- Define your needs
@@ -68,7 +75,7 @@ Let's say your machine must handle requests like `http(s)://www.my-great-website
 
 #### Add a vhost
 
-In the *vhosts* directory of the SLARP working copy, add a file containing:
+In the *vhosts* directory, add a file containing:
 ```apache
 # This is just an example of Apache virtual host configuration.
 # In build-context/Dockerfile you can see the Apache mods that are enabled.
@@ -106,8 +113,8 @@ In the *vhosts* directory of the SLARP working copy, add a file containing:
 </VirtualHost>
 ```
 Notes:
-* The internal `${APACHE_LOG_DIR}` directory is bound to the *apache-logs* directory of the SLARP working copy; I recommend to use it.
-* The internal `/etc/letsencrypt` directory is bound to the *certs* directory of the SLARP working copy; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*File` directives.
+* The internal `${APACHE_LOG_DIR}` directory is bound to the external Apache logs directory you have probably customized via the external `APACHE_LOGS_DIR` variable; I recommend to use it.
+* The internal `/etc/letsencrypt` directory is bound to the external *certs* directory; always use the pattern "/etc/letsencrypt/live/{domain}/{file}" for `SSLCertificate*File` directives.
 
 #### Get a new Let's Encrypt SSL certificate
 
@@ -120,7 +127,7 @@ Then, run
 certbot certonly --apache -d www.my-great-website.org
 ```
 and follow the instructions.  
-The certificate will be saved in the *certs* directory of the SLARP working copy, and the renewal is already scheduled.  
+The certificate will be saved in the *certs* directory, and the renewal is already scheduled.  
 No other command required, you can [ctrl][d] the SLARP environment.
 
 ### 6- Apply your changes
@@ -155,11 +162,10 @@ The *stop* command removes the SLARP container.
 
 #### Persistent data
 
-The *certs* directory contains the LE certificates Certbot has requested for you, and regularly you may want to make a copy of it, even if it is persisted when you *stop* SLARP.
-
+The *certs* directory contains the LE certificates Certbot has requested for you, and regularly you may want to make a copy of it, even if it is persisted when you stop SLARP.  
 The same applies to the *vhosts* you create.
 
-Finally, the purpose of *apache-logs* and *certbot-logs* is to avoid having logs growing inside the container. Moreover, it is usually useful to keep them.
+Finally, the purpose of *apache-logs* and *certbot-logs* (their default names in the SLARP installation if not customized) is to avoid having logs growing inside the container. Moreover, it is usually useful to keep them.
 
 #### Updating SLARP
 
