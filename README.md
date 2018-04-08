@@ -22,6 +22,8 @@ All operations must be run as **root**. The reasons are:
 * Server administration tasks usually need the highest privileges.
 * Thus, files of this project are intended to belong to root.
 
+Be sure to read and understand all this document before running any command.
+
 ### 1- Get the minimal Docker image on which the SLARP image will be based
 
 SLARP needs some things that are provided by the project [debian9-workbase](https://gitlab.zareldyn.net/zareldyn/debian9-workbase#debian9-workbase).  
@@ -57,7 +59,7 @@ This builds the "slarp-reverse-proxy" image from the "my-debian9" image.
 
 ### 4- Launch SLARP
 
-Be sure you have no other program listening to the ports 80 and 443. Then, just run
+Be sure you have no other program listening to the ports 80 and 443. To launch the service with the default configuration, just run
 ```
 # ./start
 ```
@@ -127,7 +129,7 @@ Then, run
 certbot certonly --apache -d www.my-great-website.org
 ```
 and follow the instructions.  
-The certificate will be saved in the *certs* directory, and the renewal is already scheduled.  
+The certificate will be saved in the *certs* directory, and the renewal is already scheduled; while SLARP is running Certbot periodically checks if a renewal is needed.  
 No other command required, you can [ctrl][d] the SLARP environment.
 
 ### 6- Apply your changes
@@ -165,7 +167,7 @@ The *stop* command removes the SLARP container.
 The *certs* directory contains the LE certificates Certbot has requested for you, and regularly you may want to make a copy of it, even if it is persisted when you stop SLARP.  
 The same applies to the *vhosts* you create.
 
-Finally, the purpose of *apache-logs* and *certbot-logs* (their default names in the SLARP installation if not customized) is to avoid having logs growing inside the container. Moreover, it is usually useful to keep them.
+Finally, the purpose of *apache-logs* and *certbot-logs* (their default names in the SLARP installation if not customized) is to avoid having logs growing inside the container's filesystem. Moreover, it is usually useful to keep them.
 
 #### Updating SLARP
 
