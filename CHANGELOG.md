@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.3.0] - 2018-06-26
+
+### Added
+
+- proxy_wstunnel enabled in Apache, so WebSocket has a chance to work
+
+### Fixed
+
+- Error in documentation
+
+### Changed
+
+- is-running is safer to use
+- The stop command always tries to remove the container, whatever is-running says
+
+
 ## [1.2.0] - 2018-04-08
 
 ### Added

@@ -96,23 +96,24 @@ In the *vhosts* directory, add a file containing:
 # The line below is a directive for SLARP so http://my-great-website/ (port 80 of a local container) can be reached.
 #:resolve-container:my-great-website
 
-<VirtualHost *:443>
-    ServerName www.my-great-website.org
-
-    SSLEngine on
-    SSLCertificateKeyFile /etc/letsencrypt/live/www.my-great-website.org/privkey.pem
-    SSLCertificateFile /etc/letsencrypt/live/www.my-great-website.org/fullchain.pem
-
-    # Some backends need something like this, so they know that the original request was a HTTPS request.
-    RequestHeader set X-Forwarded-Proto "https"
-
-    ProxyPass / http://my-great-website/
-    ProxyPassReverse / http://my-great-website/
-    ProxyPreserveHost On
-
-    ErrorLog ${APACHE_LOG_DIR}/my-great-website.error.log
-    CustomLog ${APACHE_LOG_DIR}/my-great-website.access.log combined
-</VirtualHost>
+# For now the section below has to be commented, uncomment it only after LE certs are generated.
+#<VirtualHost *:443>
+#    ServerName www.my-great-website.org
+#
+#    SSLEngine on
+#    SSLCertificateKeyFile /etc/letsencrypt/live/www.my-great-website.org/privkey.pem
+#    SSLCertificateFile /etc/letsencrypt/live/www.my-great-website.org/fullchain.pem
+#
+#    # Some backends need something like this, so they know that the original request was a HTTPS request.
+#    RequestHeader set X-Forwarded-Proto "https"
+#
+#    ProxyPass / http://my-great-website/
+#    ProxyPassReverse / http://my-great-website/
+#    ProxyPreserveHost On
+#
+#    ErrorLog ${APACHE_LOG_DIR}/my-great-website.error.log
+#    CustomLog ${APACHE_LOG_DIR}/my-great-website.access.log combined
+#</VirtualHost>
 ```
 Notes:
 * The internal `${APACHE_LOG_DIR}` directory is bound to the external Apache logs directory you have probably customized via the external `APACHE_LOGS_DIR` variable; I recommend to use it.
@@ -133,6 +134,8 @@ The certificate will be saved in the *certs* directory, and the renewal is alrea
 No other command required, you can [ctrl][d] the SLARP environment.
 
 ### 6- Apply your changes
+
+You can now uncomment the VirtualHost bloc in your xxx-my-great-website.conf.
 
 Once you have made changes in the *vhosts* directory, run
 ```
