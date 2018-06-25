@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Error in documentation
 
+### Changed
+
+- is-running is safer to use
+- The stop command always tries to remove the container, whatever is-running says
+
 
 ## [1.2.0] - 2018-04-08
 
