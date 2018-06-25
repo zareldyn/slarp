@@ -13,7 +13,7 @@ RUN ["/bin/bash", "-c", " \
         cron && \
     apt-get install -t stretch-backports -y \
         python-certbot-apache && \
-    a2enmod headers rewrite ssl proxy proxy_http && \
+    a2enmod headers rewrite ssl proxy proxy_http proxy_wstunnel && \
     a2dissite 000-default.conf && \
     sed -i s/www-data/$MAIN_USER_LOGIN/ /etc/apache2/envvars && \
     rm -rf /var/lib/apt/lists/* \
