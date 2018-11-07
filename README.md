@@ -64,7 +64,7 @@ Be sure you have no other program listening to the ports 80 and 443. To launch t
 # ./start
 ```
 By default all important data go to the SLARP installation directory. However you can adjust the values of these environment variables before starting: `VHOSTS_DIR`, `CERTS_DIR`, `APACHE_LOGS_DIR` and `CERTBOT_LOGS_DIR`.  
-Additionnally, you can use `STATIC_DIR` to define which path of your host will be mounted (read-only) into `/var/www/static` in the container. By default it uses the "static" directory in the SLARP installation directory. The main purpose of this is to make Apache serving the static content of your backends directly. 
+Additionnally, you can use `STATIC_DIR` to define which path of your host will be mounted (read-only) into `/var/www/static` in the container. By default it uses the "static" directory in the SLARP installation directory. The main purpose of this is to make Apache serving the static content of your backends directly.  
 If a directory does not exist, the start command creates it.
 
 For example
