@@ -2,4 +2,5 @@ apache-logs/
 certbot-logs/
 vhosts/
 certs/
+static/
 laststart.var
