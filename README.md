@@ -64,14 +64,14 @@ Be sure you have no other program listening to the ports 80 and 443. To launch t
 # ./start
 ```
 By default all important data go to the SLARP installation directory. However you can adjust the values of these environment variables before starting: `VHOSTS_DIR`, `CERTS_DIR`, `APACHE_LOGS_DIR` and `CERTBOT_LOGS_DIR`.  
-Additionnally, you can use `STATIC_DIR` to define which path of your host will be mounted (read-only) into `/var/www/static` in the container. By default it uses the `static` directory in the SLARP installation directory. The main purpose of this is to make Apache serving the static content of your backends directly.  
+Additionnally, you can use `STATIC_DIR` to define which path of your host will be mounted (read-only) into `/var/www/static` in the container. By default it uses the `static` directory in the SLARP installation directory. This option is useful if you want to define vhosts that serve static files of your host.  
 If a directory does not exist, the start command creates it. In particular, a first start without using these environment variables will create all directories in your SLARP location.
 
 For example
 ```
 # VHOSTS_DIR=/path/to/your/vhosts CERTS_DIR=/path/to/your/certificates ./start
 ```
-runs the service with a customized location for the *vhosts* and the *certs*, but still keeps logs where SLARP is installed. Also, if you want to serve static contents directly, put your files in `/your-slarp-installation/static`.
+runs the service with a customized location for the *vhosts* and the *certs*, but still keeps logs where SLARP is installed. Also, if you want to serve static contents, put your files into `/your-slarp-installation/static`.
 
 Now a container named "slarp-reverse-proxy" is running, but for now it has nothing to forward.
 
