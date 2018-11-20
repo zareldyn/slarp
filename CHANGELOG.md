@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Static folder Apache can serve directly
+- Static folder Apache can serve directly (bind mount from host)
+- Auto mount of web_static_* volumes at startup
 
 
 ## [1.3.0] - 2018-06-26
