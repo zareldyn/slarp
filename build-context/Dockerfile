@@ -4,7 +4,7 @@ FROM $BASE_IMAGE
 LABEL maintainer="zareldyn" \
       description="A simple HTTP(S) reverse proxy based on Apache and Let's Encrypt."
 
-ENV SLARP_VERSION="1.3.0"
+ENV SLARP_VERSION="1.4.0"
 
 RUN ["/bin/bash", "-c", " \
     apt-get update && \
