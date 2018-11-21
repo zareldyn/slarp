@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Static folder Apache can serve directly (bind mount from host)
 - Auto mount of web_static_* volumes at startup
 
+### Changed
+
+- The start command applies the last start parameters if it finds them and if no env var is supplied
+
 
 ## [1.3.0] - 2018-06-26
 

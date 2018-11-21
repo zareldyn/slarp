@@ -8,10 +8,23 @@ APP_VARFILE="$SELF_DIR/laststart.var"
 	exit
 }
 
+function get_laststart_var {
+	if [ ! -r "$APP_VARFILE" ] || [ ! -f "$APP_VARFILE" ]; then
+		echo ""
+		return
+	fi
+	grep $1 "$APP_VARFILE" | cut -d= -f2
+}
+
+[ -z "$CERTS_DIR" ] && CERTS_DIR=$(get_laststart_var CERTS_DIR)
 [ -z "$CERTS_DIR" ] && CERTS_DIR="$SELF_DIR"/certs
+[ -z "$VHOSTS_DIR" ] && VHOSTS_DIR=$(get_laststart_var VHOSTS_DIR)
 [ -z "$VHOSTS_DIR" ] && VHOSTS_DIR="$SELF_DIR"/vhosts
+[ -z "$APACHE_LOGS_DIR" ] && APACHE_LOGS_DIR=$(get_laststart_var APACHE_LOGS_DIR)
 [ -z "$APACHE_LOGS_DIR" ] && APACHE_LOGS_DIR="$SELF_DIR"/apache-logs
+[ -z "$CERTBOT_LOGS_DIR" ] && CERTBOT_LOGS_DIR=$(get_laststart_var CERTBOT_LOGS_DIR)
 [ -z "$CERTBOT_LOGS_DIR" ] && CERTBOT_LOGS_DIR="$SELF_DIR"/certbot-logs
+[ -z "$STATIC_DIR" ] && STATIC_DIR=$(get_laststart_var STATIC_DIR)
 [ -z "$STATIC_DIR" ] && STATIC_DIR="$SELF_DIR"/static
 
 for dir in "$CERTS_DIR" "$VHOSTS_DIR" "$APACHE_LOGS_DIR" "$CERTBOT_LOGS_DIR" "$STATIC_DIR"; do

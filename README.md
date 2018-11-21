@@ -73,6 +73,8 @@ For example
 ```
 runs the service with a customized location for the *vhosts* and the *certs*, but still keeps logs where SLARP is installed. Also, if you want to serve static contents, put your files into `/your-slarp-installation/static`.
 
+The current in-use parameters (default or user-defined) are written in `laststart.var` at startup, so you don't need to redefine them by setting environment variables each time you restart SLARP, because the start command checks this file. Instead of using env vars on the start command line you could edit `laststart.var` like a classic configuration file, however don't modify it while SLARP is running because some commands could not work properly.
+
 If you have docker volumes whose name start with "web_static_*", the start command mounts them into `/var/www/static_*`. This feature is an alternative to the bind mount of the `static` folder, and is designed to serve directly the static data your backend containers are likely to share. For exemple, if you have a "web_static_searx" volume (let's say it's created as you start a "searx" container), this volume is mounted into `/var/www/static_searx` in the reverse proxy container.
 
 Now a container named "slarp-reverse-proxy" is running, but for now it has nothing to forward.
