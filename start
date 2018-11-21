@@ -8,12 +8,26 @@ APP_VARFILE="$SELF_DIR/laststart.var"
 	exit
 }
 
-[ -z "$CERTS_DIR" ] && CERTS_DIR="$SELF_DIR"/certs
-[ -z "$VHOSTS_DIR" ] && VHOSTS_DIR="$SELF_DIR"/vhosts
-[ -z "$APACHE_LOGS_DIR" ] && APACHE_LOGS_DIR="$SELF_DIR"/apache-logs
-[ -z "$CERTBOT_LOGS_DIR" ] && CERTBOT_LOGS_DIR="$SELF_DIR"/certbot-logs
+function get_laststart_var {
+	if [ ! -r "$APP_VARFILE" ] || [ ! -f "$APP_VARFILE" ]; then
+		echo ""
+		return
+	fi
+	grep $1 "$APP_VARFILE" | cut -d= -f2
+}
 
-for dir in "$CERTS_DIR" "$VHOSTS_DIR" "$APACHE_LOGS_DIR" "$CERTBOT_LOGS_DIR"; do
+[ -z "$CERTS_DIR" ] && CERTS_DIR=$(get_laststart_var CERTS_DIR)
+[ -z "$CERTS_DIR" ] && CERTS_DIR="$SELF_DIR"/certs
+[ -z "$VHOSTS_DIR" ] && VHOSTS_DIR=$(get_laststart_var VHOSTS_DIR)
+[ -z "$VHOSTS_DIR" ] && VHOSTS_DIR="$SELF_DIR"/vhosts
+[ -z "$APACHE_LOGS_DIR" ] && APACHE_LOGS_DIR=$(get_laststart_var APACHE_LOGS_DIR)
+[ -z "$APACHE_LOGS_DIR" ] && APACHE_LOGS_DIR="$SELF_DIR"/apache-logs
+[ -z "$CERTBOT_LOGS_DIR" ] && CERTBOT_LOGS_DIR=$(get_laststart_var CERTBOT_LOGS_DIR)
+[ -z "$CERTBOT_LOGS_DIR" ] && CERTBOT_LOGS_DIR="$SELF_DIR"/certbot-logs
+[ -z "$STATIC_DIR" ] && STATIC_DIR=$(get_laststart_var STATIC_DIR)
+[ -z "$STATIC_DIR" ] && STATIC_DIR="$SELF_DIR"/static
+
+for dir in "$CERTS_DIR" "$VHOSTS_DIR" "$APACHE_LOGS_DIR" "$CERTBOT_LOGS_DIR" "$STATIC_DIR"; do
 	mkdir -p "$dir" || {
 		echo "Could not create $dir - aborting" >&2
 		exit 74
@@ -27,6 +41,13 @@ echo CERTS_DIR="$CERTS_DIR"               >  "$APP_VARFILE" || {
 echo VHOSTS_DIR="$VHOSTS_DIR"             >> "$APP_VARFILE"
 echo APACHE_LOGS_DIR="$APACHE_LOGS_DIR"   >> "$APP_VARFILE"
 echo CERTBOT_LOGS_DIR="$CERTBOT_LOGS_DIR" >> "$APP_VARFILE"
+echo STATIC_DIR="$STATIC_DIR"             >> "$APP_VARFILE"
+
+volumes=($(docker volume ls -q | grep ^web_static_ | cut -d_ -f3))
+mountCommand=''
+for name in ${volumes[@]}; do
+	mountCommand="$mountCommand -v web_static_$name:/var/www/static_$name:ro"
+done
 
 docker run -d --restart on-failure \
            --name $APP_NAME \
@@ -35,6 +56,8 @@ docker run -d --restart on-failure \
            -v "$VHOSTS_DIR":/etc/apache2/sites-enabled \
            -v "$APACHE_LOGS_DIR":/var/log/apache2 \
            -v "$CERTBOT_LOGS_DIR":/var/log/letsencrypt \
+	   -v "$STATIC_DIR":/var/www/static:ro \
+	   $mountCommand \
            -p 80:80 -p 443:443 \
            $APP_NAME:latest bash -c \
               "cron &&
